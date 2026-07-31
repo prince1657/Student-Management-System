@@ -6,7 +6,7 @@
 /* 1. CSS VARIABLES & THEME DEFINITION */
 :root {
   /* Color Palette - Light Theme */
-  --bg-primary: #f8fafc;
+  --bg-primary: #316ca7;
   --bg-secondary: #ffffff;
   --bg-tertiary: #f1f5f9;
   --bg-glass: rgba(255, 255, 255, 0.85);
@@ -19,7 +19,7 @@
   --text-inverse: #ffffff;
 
   /* Brand Accents */
-  --primary: #4f46e5;
+  --primary: hsl(78, 75%, 59%);
   --primary-hover: #4338ca;
   --primary-light: #e0e7ff;
   --primary-glow: rgba(79, 70, 229, 0.25);
