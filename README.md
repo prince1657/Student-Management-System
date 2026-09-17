@@ -44,9 +44,10 @@ fills itself in and any password works.
 The topbar has a portal switcher so you can move between the four without
 signing out.
 
-**The app runs without MongoDB.** If the database is down the UI still works
-against its own browser-local copy of the data, and the chip in the topbar
-turns amber to tell you. That is what makes it demo-able anywhere.
+**The app runs without MongoDB.** The server boots and serves the UI, data
+routes answer `503` straight away instead of hanging on Mongoose's buffering
+timeout, and the browser falls back to its local copy of the data. The chip in
+the topbar turns amber and says why. That is what makes it demo-able anywhere.
 
 ## Layout
 
@@ -96,17 +97,21 @@ GET    /api/fees                POST /api/fees/:id/pay
 GET    /api/notices             POST /api/notices
 ```
 
-Every response has the same shape:
+Responses carry the payload under `data`:
 
 ```json
 { "status": 200, "success": true, "data": {} }
 ```
+
+Errors swap it for a `message`, and `POST /api/auth/login` is the one exception
+— it returns `token` and `user` at the top level.
 
 Try it:
 
 ```bash
 curl -s localhost:5055/api/health
 curl -s "localhost:5055/api/students?search=aarav" | head -c 300
+curl -s localhost:5055/api/nope        # 404 with a message, not a stack trace
 ```
 
 ## How the two halves connect
@@ -162,7 +167,8 @@ dark:
 
 Dark mode is its own set of steps against a dark surface, not an inverted light
 theme. Keyboard focus is always visible, `prefers-reduced-motion` is respected,
-and the layout works down to 360px.
+and all 17 screens were checked for horizontal overflow at 360, 768 and
+1440px.
 
 ## Notes
 
