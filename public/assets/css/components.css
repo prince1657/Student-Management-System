@@ -5,6 +5,7 @@
 /* --- Panel -------------------------------------------------------------- */
 
 .panel {
+  min-width: 0;
   border: 1px solid var(--rule);
   border-radius: var(--r-panel);
   background: var(--surface);
@@ -12,14 +13,18 @@
 
 .panel-head {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
   gap: var(--s3);
   padding: var(--s4) var(--s5);
   border-bottom: 1px solid var(--rule);
 }
 
+/* A title next to an action button pushed the panel wider than a phone
+   screen. Both are allowed to shrink, and the row wraps before it overflows. */
 .panel-head h2,
 .panel-head h3 {
+  min-width: 0;
   font-size: var(--text-md);
 }
 
@@ -62,16 +67,21 @@
   gap: var(--s5);
 }
 
+/* min(300px, 100%) rather than a bare 300px: below a 300px track the column
+   would otherwise refuse to shrink and push the page sideways. */
 .grid-halves {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
   align-items: start;
   gap: var(--s5);
 }
 
+/* A `1fr` track takes min-width:auto, so a wide table inside one sets the
+   track's floor and the whole page scrolls sideways. minmax(0, 1fr) lets the
+   track shrink and the table's own .table-scroll handle the overflow. */
 @media (max-width: 1000px) {
   .grid-2 {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -487,6 +497,7 @@
 .search {
   position: relative;
   flex: 1;
+  min-width: 0;
   max-width: 320px;
 }
 
@@ -516,6 +527,14 @@
 
 .toolbar .spacer {
   flex: 1;
+}
+
+/* A select sized to its longest option ("Unit Test 2 · Mathematics · 50
+   marks") set the intrinsic width of the whole panel. */
+.toolbar .select,
+.toolbar .input,
+.toolbar .btn {
+  max-width: 100%;
 }
 
 /* --- Segmented control -------------------------------------------------- */

@@ -276,6 +276,10 @@
   border-bottom: 1px solid var(--rule);
 }
 
+.profile-head-text {
+  min-width: 0;
+}
+
 .profile-head-text h2 {
   font-size: var(--text-lg);
 }

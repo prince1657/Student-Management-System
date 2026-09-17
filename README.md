@@ -180,4 +180,5 @@ and reworked: reorganised into `src/` and `public/`, new interface and design
 system, charts rebuilt, sign-in and sessions added, and the data localised to
 one Indian school.
 
-MIT.
+The upstream project ships no licence, so none is claimed here. Terms are the
+original author's to set.
