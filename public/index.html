@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>EduPulse — school administration</title>
+  <meta name="description" content="Attendance, marks, fees and notices for a school, with separate views for the office, teachers, students and parents."/>
+  <meta name="theme-color" content="#0f4d3a"/>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f4d3a'/%3E%3Cpath d='M9 21V11h13' stroke='%23c8860d' stroke-width='2.6' fill='none'/%3E%3Cpath d='M9 16h9' stroke='%23fff' stroke-width='2.6' fill='none'/%3E%3C/svg%3E"/>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;450;500;550;600&display=swap" rel="stylesheet"/>
+
+  <link rel="stylesheet" href="assets/css/tokens.css"/>
+  <link rel="stylesheet" href="assets/css/base.css"/>
+  <link rel="stylesheet" href="assets/css/layout.css"/>
+  <link rel="stylesheet" href="assets/css/components.css"/>
+  <link rel="stylesheet" href="assets/css/views.css"/>
+</head>
+<body>
+
+  <!-- ===================== Sign in ===================== -->
+  <div class="signin" id="signin">
+    <div class="signin-board">
+      <div class="board-head" style="padding: 0">
+        <span class="mark">E</span>
+        <span class="board-head-text">
+          <span class="board-name">EduPulse</span>
+          <span class="board-sub">Nalanda Public School</span>
+        </span>
+      </div>
+
+      <div class="signin-pitch">
+        <h1>The register, the marksheet and the fee book, in one place.</h1>
+        <p>Mark a class in under a minute, see who is behind on fees before the term
+           closes, and give parents the same numbers you are looking at.</p>
+      </div>
+
+      <div class="signin-stats">
+        <div>
+          <span class="figure-value">3</span>
+          <span>classes</span>
+        </div>
+        <div>
+          <span class="figure-value">8</span>
+          <span>students on roll</span>
+        </div>
+        <div>
+          <span class="figure-value">Term 2</span>
+          <span>session 2026-27</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="signin-form-side">
+      <form class="signin-form" id="signin-form" novalidate>
+        <h2>Sign in</h2>
+        <p class="signin-lede">Pick the portal you need. Each one shows only what that
+           person is allowed to see.</p>
+
+        <div class="role-choice" id="role-choice"><!-- built by app.js --></div>
+
+        <div class="field">
+          <label for="signin-email">School email</label>
+          <input class="input" type="email" id="signin-email" name="email" autocomplete="username"/>
+        </div>
+
+        <div class="field">
+          <label for="signin-password">Password</label>
+          <input class="input" type="password" id="signin-password" name="password"
+                 autocomplete="current-password" value="demo1234"/>
+        </div>
+
+        <button class="btn btn-primary btn-block btn-lg" type="submit">Sign in</button>
+
+        <p class="signin-hint">This is a demo build. The email is filled in for the portal
+           you pick and any password works.</p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================== App ===================== -->
+  <div class="app" id="app" hidden>
+    <div class="scrim" id="board-scrim" hidden></div>
+
+    <aside class="board" id="board">
+      <div class="board-head">
+        <span class="mark">E</span>
+        <span class="board-head-text">
+          <span class="board-name">EduPulse</span>
+          <span class="board-sub" id="board-school">Nalanda Public School</span>
+        </span>
+      </div>
+
+      <nav class="board-nav" id="board-nav" aria-label="Sections"></nav>
+
+      <div class="board-foot">
+        <div class="board-user">
+          <span class="avatar avatar-initials" id="user-initials"></span>
+          <span class="board-user-text">
+            <span class="board-user-name" id="user-name"></span>
+            <span class="board-user-role" id="user-role"></span>
+          </span>
+        </div>
+        <button class="signout" id="signout">Sign out</button>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <button class="icon-btn menu-btn" id="menu-toggle" aria-label="Open navigation"></button>
+        <h1 class="page-title" id="page-title">Overview</h1>
+
+        <div class="topbar-tools">
+          <span class="term-chip" id="term-chip"></span>
+
+          <div class="viewas">
+            <button class="icon-btn" id="viewas-toggle" aria-haspopup="true"
+                    aria-expanded="false" title="Open another portal"></button>
+            <div class="viewas-menu" id="viewas-menu" hidden role="menu"></div>
+          </div>
+
+          <button class="icon-btn" id="theme-toggle" title="Switch theme"></button>
+
+          <button class="icon-btn" id="notif-toggle" title="Notifications"></button>
+        </div>
+      </header>
+
+      <main class="content" id="view" tabindex="-1"></main>
+    </div>
+  </div>
+
+  <!-- ===================== Overlays ===================== -->
+  <div class="scrim-modal" id="modal-scrim" hidden role="dialog" aria-modal="true"
+       aria-labelledby="modal-title">
+    <div class="modal">
+      <header class="modal-head">
+        <h2 id="modal-title"></h2>
+        <button class="icon-btn" data-close-modal aria-label="Close"></button>
+      </header>
+      <div class="modal-body" id="modal-body"></div>
+      <footer class="modal-foot" id="modal-foot"></footer>
+    </div>
+  </div>
+
+  <div id="toasts" aria-live="polite"></div>
+
+  <script src="assets/js/core/icons.js"></script>
+  <script src="assets/js/core/format.js"></script>
+  <script src="assets/js/core/store.js"></script>
+  <script src="assets/js/core/api.js"></script>
+  <script src="assets/js/core/data.js"></script>
+  <script src="assets/js/core/auth.js"></script>
+  <script src="assets/js/core/ui.js"></script>
+  <script src="assets/js/core/charts.js"></script>
+  <script src="assets/js/views/admin.js"></script>
+  <script src="assets/js/views/teacher.js"></script>
+  <script src="assets/js/views/student.js"></script>
+  <script src="assets/js/views/parent.js"></script>
+  <script src="assets/js/core/router.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

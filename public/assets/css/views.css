@@ -1,0 +1,433 @@
+/* ==========================================================================
+   View-specific: charts, timetable, marksheet, profile
+   ========================================================================== */
+
+/* --- Chart anatomy ------------------------------------------------------- */
+
+.chart {
+  padding: var(--s5);
+}
+
+.chart-caption {
+  margin-bottom: var(--s4);
+  font-size: var(--text-sm);
+  color: var(--ink-3);
+}
+
+.chart-plot {
+  position: relative;
+  width: 100%;
+}
+
+.chart-plot svg {
+  width: 100%;
+  overflow: visible;
+}
+
+.axis-label {
+  font-size: 11px;
+  fill: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.value-label {
+  font-size: 11px;
+  font-weight: 600;
+  fill: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.grid-rule {
+  stroke: var(--grid-line);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2) var(--s4);
+  margin-top: var(--s4);
+  padding-top: var(--s3);
+  border-top: 1px solid var(--rule);
+  font-size: var(--text-sm);
+  color: var(--ink-2);
+}
+
+.legend-key {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.legend-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex: none;
+}
+
+/* Crosshair tooltip, shared by every chart form */
+.chart-tip {
+  position: absolute;
+  z-index: 5;
+  min-width: 108px;
+  padding: var(--s2) var(--s3);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-control);
+  background: var(--surface);
+  box-shadow: var(--lift);
+  font-size: var(--text-sm);
+  pointer-events: none;
+  transform: translate(-50%, calc(-100% - 10px));
+  transition: opacity 90ms linear;
+}
+
+.chart-tip[hidden] {
+  display: none;
+}
+
+.chart-tip-head {
+  color: var(--ink-3);
+  font-size: var(--text-xs);
+}
+
+.chart-tip-row {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  margin-top: 3px;
+  font-weight: 550;
+  font-variant-numeric: tabular-nums;
+}
+
+.chart-hit {
+  fill: transparent;
+  cursor: crosshair;
+}
+
+/* Gauge */
+.gauge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s3);
+  padding: var(--s2) 0;
+}
+
+.gauge-wrap {
+  position: relative;
+  width: 156px;
+  height: 156px;
+}
+
+.gauge-centre {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.gauge-value {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.gauge-label {
+  margin-top: var(--s1);
+  font-size: var(--text-sm);
+  color: var(--ink-3);
+}
+
+.gauge-track {
+  stroke: var(--surface-sunken);
+}
+
+.gauge-arc {
+  transition: stroke-dashoffset 900ms var(--ease);
+}
+
+/* Hero figure, for the one number a page is about */
+.hero-figure {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--s3);
+}
+
+.hero-figure .figure-value {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: 600;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.hero-figure .figure-unit {
+  padding-bottom: 5px;
+  font-size: var(--text-md);
+  color: var(--ink-3);
+}
+
+/* --- Timetable ---------------------------------------------------------- */
+
+.timetable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.timetable th {
+  padding: var(--s3);
+  border-bottom: 1.5px solid var(--rule-strong);
+  font-weight: 550;
+  color: var(--ink-2);
+  text-align: left;
+}
+
+.timetable th:first-child {
+  width: 124px;
+}
+
+.timetable td {
+  padding: 6px;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+
+.timetable .slot-time {
+  padding: var(--s3);
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.slot {
+  padding: var(--s2) var(--s3);
+  border-left: 2px solid var(--series-1);
+  border-radius: 0 var(--r-control) var(--r-control) 0;
+  background: var(--surface-hover);
+  line-height: 1.35;
+}
+
+.slot-subject {
+  font-weight: 550;
+}
+
+.slot-meta {
+  font-size: var(--text-xs);
+  color: var(--ink-3);
+}
+
+.slot.s2 { border-left-color: var(--series-2); }
+.slot.s3 { border-left-color: var(--series-3); }
+.slot.s4 { border-left-color: var(--series-4); }
+
+.slot-free {
+  padding: var(--s2) var(--s3);
+  color: var(--ink-3);
+  font-size: var(--text-xs);
+}
+
+/* --- Report card -------------------------------------------------------- */
+
+.report-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s5);
+  padding: var(--s5);
+  border-bottom: 1px solid var(--rule);
+}
+
+.report-head .grade-seal {
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  border: 1.5px solid var(--board);
+  border-radius: 50%;
+  background: var(--board-tint);
+  color: var(--board-ink);
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 600;
+}
+
+.marksheet-total td {
+  border-top: 1.5px solid var(--rule-strong);
+  border-bottom: 0 !important;
+  font-weight: 600;
+}
+
+/* --- Profile ------------------------------------------------------------ */
+
+.profile-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s4);
+  padding: var(--s5);
+  border-bottom: 1px solid var(--rule);
+}
+
+.profile-head-text {
+  min-width: 0;
+}
+
+.profile-head-text h2 {
+  font-size: var(--text-lg);
+}
+
+.profile-head-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  margin-top: var(--s2);
+}
+
+/* --- Assignment list ---------------------------------------------------- */
+
+.task {
+  display: flex;
+  gap: var(--s4);
+  padding: var(--s4) var(--s5);
+  border-bottom: 1px solid var(--rule);
+}
+
+.task:last-child {
+  border-bottom: 0;
+}
+
+.task-due {
+  flex: none;
+  width: 52px;
+  padding-top: 2px;
+  text-align: center;
+}
+
+.task-due .day {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.task-due .month {
+  font-size: var(--text-xs);
+  color: var(--ink-3);
+}
+
+.task-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.task-title {
+  font-weight: 550;
+}
+
+.task-desc {
+  margin-top: 3px;
+  font-size: var(--text-sm);
+  color: var(--ink-2);
+}
+
+.task-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s2);
+  margin-top: var(--s3);
+}
+
+.task-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--s2);
+}
+
+/* --- Misc --------------------------------------------------------------- */
+
+.file-row {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  padding: var(--s3) var(--s5);
+  border-bottom: 1px solid var(--rule);
+}
+
+.file-row:last-child {
+  border-bottom: 0;
+}
+
+.file-kind {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--r-control);
+  background: var(--surface-sunken);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ink-2);
+  letter-spacing: 0.02em;
+}
+
+.file-row .file-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.subject-row {
+  display: flex;
+  align-items: center;
+  gap: var(--s4);
+  padding: var(--s3) var(--s5);
+  border-bottom: 1px solid var(--rule);
+}
+
+.subject-row:last-child {
+  border-bottom: 0;
+}
+
+.subject-row .subject-name {
+  flex: 1;
+  min-width: 0;
+  font-weight: 450;
+}
+
+.subject-row .meter {
+  width: 128px;
+  flex: none;
+}
+
+.subject-row .subject-score {
+  width: 56px;
+  flex: none;
+  text-align: right;
+  font-weight: 550;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 560px) {
+  .subject-row .meter {
+    display: none;
+  }
+
+  .details-list > div {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .details-list dt {
+    width: auto;
+  }
+}
