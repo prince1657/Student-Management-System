@@ -214,7 +214,7 @@ class Store {
 
   create(name, values) {
     if (!this.data[name]) this.data[name] = [];
-    const row = { id: `${name.slice(0, 3)}-${Date.now().toString(36)}`, ...values };
+    const row = { id: this.nextId(name), ...values };
     this.data[name].unshift(row);
     this.persist();
     return row;
@@ -236,6 +236,15 @@ class Store {
     this.data[name] = next;
     this.persist();
     return true;
+  }
+
+  // Date.now() alone repeats inside a millisecond, and two rows created in the
+  // same tick then shared an id -- which made getById ambiguous and let one
+  // delete remove both. The counter makes the key unique regardless of clock
+  // resolution.
+  nextId(name) {
+    this.seq = (this.seq || 0) + 1;
+    return `${name.slice(0, 3)}-${Date.now().toString(36)}${this.seq.toString(36)}`;
   }
 
   get school() {

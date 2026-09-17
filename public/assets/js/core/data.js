@@ -16,9 +16,22 @@ const Data = {
       phone: values.phone || ''
     });
 
+    // Take the roll prefix from the students already in the class. Deriving it
+    // from the class name gave "XA-06" in a class whose rolls read "10A-01",
+    // because the class is named in Roman numerals and the rolls are not.
+    const peers = window.Store.studentsInClass(values.classId);
     const cls = window.Store.getById('classes', values.classId);
-    const prefix = cls ? `${cls.name.replace('Class ', '')}${cls.section}` : 'NEW';
-    const next = window.Store.studentsInClass(values.classId).length + 1;
+    const prefix = peers.length
+      ? peers[0].rollNumber.split('-')[0]
+      : (cls ? `${cls.name.replace('Class ', '')}${cls.section}` : 'NEW');
+
+    // One past the highest roll in use, so removing a student and adding
+    // another does not reissue a number that is already on a record.
+    const highest = peers.reduce((max, s) => {
+      const n = Number(s.rollNumber.split('-')[1]);
+      return Number.isNaN(n) ? max : Math.max(max, n);
+    }, 0);
+    const next = highest + 1;
 
     return window.Store.create('students', {
       userId: user.id,
